@@ -14,12 +14,12 @@ const setBox = <T>(b: Box<T>, v: T): void => { b[0] = v; return; }
 // Store datatype
 export interface Store {
     tag: "Store";
-    vals: Box<Value>[];
+    vals: Box<Box<Value>[]>;
 }
 
 export const isStore = ...;
 export const makeEmptyStore = ...;
-export const theStore: Store = 
+export const theStore: Store = makeEmptyStore();
 export const extendStore = (s: Store, val: Value): Store =>
     // Complete
     
@@ -71,9 +71,10 @@ export const applyEnv = (env: Env, v: string): Result<number> =>
 
 const applyGlobalEnv = (env: GlobalEnv, v: string): Result<number> => 
     // Complete
-
+    {}
 export const globalEnvAddBinding = (v: string, addr: number): void =>
     // Complete
+    {}
 
 const applyExtEnv = (env: ExtEnv, v: string): Result<number> =>
     env.vars.includes(v) ? makeOk(env.addresses[env.vars.indexOf(v)]) :
