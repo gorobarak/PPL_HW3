@@ -257,7 +257,7 @@ const parseSetExp = (params: Sexp[]): Result<SetExp> =>
     parseGoodSetExp(first(params), second(params));
     
 const parseGoodSetExp = (variable: Sexp, val: Sexp): Result<SetExp> =>
-    ! isIdentifier(variable) ? makeFailure("First arg of set! must be an identifier") :
+    !isIdentifier(variable) ? makeFailure("First arg of set! must be an identifier") :
     bind(parseL21CExp(val), (val: CExp) => makeOk(makeSetExp(makeVarRef(variable), val)));
 
 // LitExp has the shape (quote <sexp>)
@@ -323,5 +323,5 @@ export const unparse = (exp: Parsed): string =>
     isLetExp(exp) ? unparseLetExp(exp) :
     isDefineExp(exp) ? `(define ${exp.var.var} ${unparse(exp.val)})` :
     isProgram(exp) ? `(L21 ${unparseLExps(exp.exps)})` :
-    isSetExp(exp) ? `(set! ${exp.var} ${unparse(exp.val)})` :
+    isSetExp(exp) ? `(set! ${exp.var.var} ${unparse(exp.val)})` :
     exp;
