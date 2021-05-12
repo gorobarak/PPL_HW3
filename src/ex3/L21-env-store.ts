@@ -1,4 +1,4 @@
-import { add, map, zipWith,length, concat, indexOf, append, set } from "ramda";
+import { add, map, zipWith,length, concat, indexOf, append, set, reduce} from "ramda";
 import { Value } from './L21-value-store';
 import { Result, makeFailure, makeOk, bind, either } from "../shared/result";
 
@@ -38,6 +38,19 @@ export const applyStore = (store: Store, address: number): Result<Value> =>
 export const setStore = (store: Store, address: number, val: Value): void => 
     // should we take care of address which is out of bounds?
     setBox(unbox(store.vals)[address],val)
+
+//returns the new addresses
+export const mapExtendStore = (s: Store, vals: Value[]): number[] => {
+    return reduce(
+        (addresess_acc: number[], val: Value) => {
+        return append(length(unbox(extendStore(theStore,val).vals)), addresess_acc )
+    },
+         [],
+          vals)
+}
+
+export const lastAddress = (s: Store): number => length(unbox(s.vals))
+
 
 
 // ========================================================
