@@ -30,9 +30,10 @@ export const extendStore = (s: Store, val: Value): Store =>{
     
     
 export const applyStore = (store: Store, address: number): Result<Value> =>
-    (address > length(unbox(store.vals))) ? makeFailure("address out of bounds") :
+    (address >= length(unbox(store.vals))) ? makeFailure("address out of bounds") :
     (address < 0 ) ? makeFailure("address out of bounds") :
     makeOk(unbox(unbox(store.vals)[address])) 
+
 
     
 export const setStore = (store: Store, address: number, val: Value): void => 
@@ -43,13 +44,13 @@ export const setStore = (store: Store, address: number, val: Value): void =>
 export const mapExtendStore = (s: Store, vals: Value[]): number[] => {
     return reduce(
         (addresess_acc: number[], val: Value) => {
-        return append(length(unbox(extendStore(theStore,val).vals)), addresess_acc )
+        return append(length(unbox(extendStore(theStore,val).vals)) - 1, addresess_acc)
     },
          [],
           vals)
 }
 
-export const lastAddress = (s: Store): number => length(unbox(s.vals))
+export const lastAddress = (s: Store): number => length(unbox(s.vals)) - 1;
 
 
 
