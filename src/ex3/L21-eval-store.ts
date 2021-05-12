@@ -6,7 +6,7 @@ import { map, reduce, repeat, zipWith } from "ramda";
 import { isBoolExp, isCExp, isLitExp, isNumExp, isPrimOp, isStrExp, isVarRef,
          isAppExp, isDefineExp, isIfExp, isLetExp, isProcExp, Binding, VarDecl, VarRef, CExp, Exp, IfExp, LetExp, ProcExp, Program,
          parseL21Exp, DefineExp, isSetExp, SetExp} from "./L21-ast";
-import { applyEnv, makeExtEnv, Env, Store, setStore, extendStore, ExtEnv, applyEnvStore, theGlobalEnv, globalEnvAddBinding, theStore, applyStore, mapExtendStore, lastAddress } from "./L21-env-store";
+import { applyEnv, makeExtEnv, Env, Store, setStore, extendStore, ExtEnv, theGlobalEnv, globalEnvAddBinding, theStore, applyStore, mapExtendStore, lastAddress } from "./L21-env-store"; //TODO is needed? "applyEnvStore"
 import { isClosure, makeClosure, Closure, Value } from "./L21-value-store";
 import { applyPrimitive } from "./evalPrimitive-store";
 import { first, rest, isEmpty } from "../shared/list";
@@ -105,10 +105,14 @@ const evalLet = (exp: LetExp, env: Env): Result<Value> => {
 const evalVarRef = (v: VarRef, env: Env): Result<Value> => 
     bind(applyEnv(env, v.var), (adr: number) => applyStore(theStore, adr))
 
-const evalSet = (exp: SetExp, env: Env): Result<Value> => {
+const evalSet = (exp: SetExp, env: Env): Result<Value> => 
     // eval the val in env
+    // mutate var binding in store to val
     // mutate var to bind to val
     // return result of void
-}
+    safe2((addr: number, val: Value)=> makeOk(setStore(theStore, addr, val)))
+    (applyEnv(env, exp.var.var), applicativeEval(exp.val, env))
+    
+
 
 
